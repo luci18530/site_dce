@@ -1,10 +1,19 @@
 "use client";
 
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 import { representantesConsuni } from '../data/conselheiros';
-import { pautasConsuni } from '../data/pautas';
 
 export default function Consuni() {
+  const [pautas, setPautas] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/pautas?conselho=consuni')
+      .then((res) => res.json())
+      .then(setPautas)
+      .catch(() => setPautas([]));
+  }, []);
+
   return (
     <>
       <title>CONSUNI - DCE UFPB</title>
@@ -130,7 +139,7 @@ export default function Consuni() {
             </h2>
             
             <div className="space-y-6">
-              {pautasConsuni.map((pauta, index) => (
+              {pautas.map((pauta, index) => (
                 <div key={index} className="bg-gray-50 rounded-lg p-6 border-l-4 border-sky-500">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                     <h3 className="text-xl font-semibold text-gray-800 mb-2 md:mb-0">

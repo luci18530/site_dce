@@ -1,10 +1,20 @@
 "use client";
 
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import { representantesConsepe } from '../data/conselheiros';
-import { pautasConsepe } from '../data/pautas';
+import { pautasConsepe as initialPautasConsepe } from '../data/pautas';
 
 export default function Consepe() {
+  const [pautas, setPautas] = useState(initialPautasConsepe);
+
+  useEffect(() => {
+    const stored = typeof window !== 'undefined' && localStorage.getItem('pautasConsepe');
+    if (stored) {
+      setPautas(JSON.parse(stored));
+    }
+  }, []);
+
   return (
     <>
       <title>CONSEPE - DCE UFPB</title>
@@ -139,7 +149,7 @@ export default function Consepe() {
             </h2>
             
             <div className="space-y-6">
-              {pautasConsepe.map((pauta, index) => (
+              {pautas.map((pauta, index) => (
                 <div key={index} className="bg-gray-50 rounded-lg p-6 border-l-4 border-sky-500">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-3">
                     <h3 className="text-xl font-semibold text-gray-800 mb-2 md:mb-0">
